@@ -10,3 +10,39 @@ knitr::opts_chunk$set(
 )
 ```
 
+## Começando com um exemplo
+
+```{r eval=FALSE}
+shiny::runGitHub('abjur/vistemplate', subdir='exemplo_01_helloworld',
+                  display.mode = 'showcase')
+```
+
+O Shiny utiliza como padrão o [bootstrap css](http://getbootstrap.com/css/) do [Twitter](https://twitter.com), que é bonito e responsivo (lida bem com várias plataformas, como notebook e mobile). Note que criamos páginas básicas com `pageWithSidebar`. Páginas mais trabalhadas são criadas com `fluidPage`, `fluidRow`, `column`. Pesquise outros tipos de layouts no shiny. É possível criar páginas web customizadas direto no HTML.
+
+Para estudar os *widgets* (entradas de dados para o usuário), acesse [este link](http://shiny.rstudio.com/gallery/widget-gallery.html 'widgets') ou rode
+
+```{r eval=FALSE}
+shiny::runGitHub('garrettgman/shinyWidgets')
+```
+
+## Criando outputs
+
+Imagine que para cada função `xxOutput('foo', ...)` do `ui.R` você pode colocar um código do tipo `output$foo <- renderXX(...)` no `server.R`. A função no arquivo `ui.R` determina a localização e identificação do elemento. Crie gráficos com `plotOutput` e `renderPlot` e exiba dados com `dataTableOutput` e `renderDataTable`.
+
+## Fazendo mais com o shiny
+
+### Shiny Server Pro
+
+- Licença comercial do Shiny-server
+- Possui algumas características a mais, como autenticação e suporte.
+
+### shinyapps.io
+
+- Para compartilhar um aplicativo shiny, geralmente precisamos ter um servidor Linux (geralmente utilizando algum serviço na cloud como AWS ou DigitalOcean) com o shiny server instalado.
+- Isso pode ser doloroso.
+- O shinyapps.io é um sistema (que envolve tanto pacote do R como uma página web) que permite que o usuário coloque sua aplicação shiny na web sem muito esforço.
+- O serviço foi desenvolvido pela RStudio Inc. e possui contas grátis e pagas.
+
+### Flexdashboards
+
+(na outra página)
