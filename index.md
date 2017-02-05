@@ -1,6 +1,6 @@
 ---
 title: Introdução
-date: '2017-01-26'
+date: '2017-02-05'
 ---
 
 
@@ -11,9 +11,9 @@ date: '2017-01-26'
 
 Nas outras aulas pincelamos os elementos de transformação, visualização e modelagem de dados. Para completar nossos trabalhos, precisamos de boas ferramentas de comunicação.
 
-A maior parte dos trabalhos de análise estatística possuem três *outputs* possíveis: i) relatórios analíticos, ii) *dashboards* de visualização e iii) APIs (*Application Programming Interfaces*). Neste Power-Up, vamos aprender a construir *dashboards* utilizando o pacote `shiny`.
+A maior parte dos trabalhos de análise estatística possui três *outputs* possíveis: i) relatórios analíticos, ii) *dashboards* de visualização e iii) APIs (*Application Programming Interfaces*). Neste Power-Up, vamos aprender a construir *dashboards* utilizando o pacote `shiny`.
 
-O Shiny é um sistema para desenvolvimento de aplicações web usando o R, um pacote do R (`shiny`) e um servidor web (`shiny server`). Shiny não é uma página web, não é um substituto para sistemas mais gerais, como Ruby on Rails e Django, e também não é uma ferramenta gerencial, como o Tableau.
+O Shiny é um sistema para desenvolvimento de aplicações web usando o R, um pacote do R (`shiny`) e um servidor web (`shiny server`). O Shiny é exatamente isso e nada mais, portanto Shiny não é uma página web, não é um substituto para sistemas mais gerais, como Ruby on Rails e Django, e também não é uma ferramenta gerencial, como o Tableau.
 
 Para entender sobre Shiny, é necessário entender primeiro o que é [server side e user side](http://programmers.stackexchange.com/a/171210 "diferencas"). Quando surfamos na web, nos _comunicamos_ com servidores do mundo inteiro, geralmente através do protocolo HTTP.
 
@@ -32,13 +32,81 @@ O pacote `shiny` do R possui internamente um servidor web básico, geralmente ut
 
 ## Começando com um exemplo
 
+Um aplicativo em `shiny` (ou `shiny app`) é composto por duas partes:
+
+- Um script `ui.R`, que constrói a interface que o usuário enxerga e interage;
+- Um script `server.R`, que descreve o código em R que roda por trás da `user-interface`. 
+
+Um exemplo de app com essa estrutura pode ser visualizado rodando o comando abaixo. (Para voltar ao R feche a janela ou pressine Esc no console):
+
 
 ```r
-shiny::runGitHub('abjur/vistemplate', subdir='exemplo_01_helloworld',
-                  display.mode = 'showcase')
+shiny::runExample('01_hello')
 ```
 
-O Shiny utiliza como padrão o [bootstrap css](http://getbootstrap.com/css/) do [Twitter](https://twitter.com), que é bonito e responsivo (lida bem com várias plataformas, como notebook e mobile). Note que criamos páginas básicas com `pageWithSidebar`. Páginas mais trabalhadas são criadas com `fluidPage`, `fluidRow`, `column`. Pesquise outros tipos de layouts no shiny. É possível criar páginas web customizadas direto no HTML.
+Nesse primeiro exemplo, o arquivo `ui.R` é bastante simples, mas ilustra a estrutura básica de um arquivo desse tipo.
+
+
+```r
+library(shiny)
+
+# Define a User-Interface da aplicação
+shinyUI(fluidPage(
+  # Título da aplicação
+  titlePanel("Hello Shiny!"),
+
+  # Sidebar com um slider para o número de colunas
+  sidebarLayout(
+    sidebarPanel(
+      sliderInput("bins",
+                  "Number of bins:",
+                  min = 1,
+                  max = 50,
+                  value = 30)
+    ),
+
+    # Imprime o plot
+    mainPanel(
+      plotOutput("distPlot")
+    )
+  )
+))
+```
+
+Todo arquivo `ui` tem uma composição parecida com a identificada acima:
+
+- Todo o código, com exceção do `library(shiny)`, está envolto em uma aplicação da função `shinyUI`.
+    - Dentro do `shinyUI`, todo código está envolto em uma função que define o layout da aplicação. No exemplo anterior, `fluidPage` faz esse papel. Existem outras opções que serão detalhadas mais adiante.
+      - Dentro da definição do layout vem o conteúdo da página.
+
+
+```r
+
+library(shiny)
+
+# Define a lógica necessária pra criar o histograma
+shinyServer(function(input, output) {
+
+  # Expressão que gera o histograma. A expressão é 
+  # escrita dentro de um "renderPlot" para garantir
+  # duas coisas:
+  #
+  #  1) A expressão é "reactive" e por isso será atualizada
+  # automaticamente após a mudança de um input.
+  #  2) Seu tipo de output é um plot.
+
+  output$distPlot <- renderPlot({
+    x    <- faithful[, 2]  # Old Faithful Geyser data
+    bins <- seq(min(x), max(x), length.out = input$bins + 1)
+
+    # Desenha o histograma com um determinado número de bins.
+    hist(x, breaks = bins, col = 'darkgray', border = 'white')
+  })
+})
+
+```
+
+É interessante notar que o código não fornece nenhum parâmetro gráfico para o navegador, tal como o conteúdo de um arquivo `css`. O Shiny utiliza como padrão o estilo [bootstrap css](http://getbootstrap.com/css/) do [Twitter](https://twitter.com), que é bonito e responsivo (lida bem com várias plataformas, como notebook e mobile). Não é necessário descrever com detalhes o site que será construído, apenas os `inputs` e `outputs`.
 
 Para estudar os *widgets* (entradas de dados para o usuário), acesse [este link](http://shiny.rstudio.com/gallery/widget-gallery.html 'widgets') ou rode
 
