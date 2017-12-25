@@ -1,0 +1,16 @@
+---
+title: "Compartilhando"
+author: "William Amorim"]
+---
+
+## Compartilhando
+
+- app.R (precisa ter esse nome)
+- shinyapps.io
+   - servidor do Rstudio
+   - escalável
+   - fácil
+   - gratuito*
+   - explicar como publicar
+- Servidor próprio
+   - Shiny server

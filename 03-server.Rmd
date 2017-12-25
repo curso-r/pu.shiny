@@ -1,0 +1,12 @@
+---
+title: "Server"
+author: "William Amorim"
+---
+
+## Server
+
+- Arquitetura
+   - atualização dos parâmetros (inputs)
+   - outputs
+   - funções Render
+   - dar exemplos

@@ -1,0 +1,14 @@
+---
+title: "UI"
+author: "William Amorim"
+---
+
+## UI
+
+- Funções do ui geram código HTML
+- Inputs
+   - dar exemplos
+   - explicar argumentos
+- Outputs
+   - tabela com exemplo de funções
+   - discutir argumentos de uma função

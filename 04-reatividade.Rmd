@@ -1,0 +1,17 @@
+---
+title: "Reatividade"
+author: "William Amorim"
+---
+
+## Reatividade
+
+- Exemplo Excel
+- reactive values
+- reactive functions
+   - render_()
+   - reactive()
+   - isolate()
+   - observeEvent()
+   - observe()
+   - eventReactive()
+   - reactiveValues()

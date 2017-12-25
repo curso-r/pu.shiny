@@ -1,0 +1,18 @@
+---
+title: "Customizando aparência"
+author: "William Amorim"
+---
+
+## Costumizando aparência
+
+- fluidPage()
+- tags()
+   - exemplos
+- HTML()
+- layout
+   - fluidRow()
+   - fixedPage()
+   - fixedRow()
+- Paineis
+- shinydashboard
+- CSS

@@ -1,5 +1,6 @@
 ---
 title: "Introdução"
+author: "William Amorim, Julio Trecenti"
 ---
 
 ```{r, message=FALSE, warning=FALSE, include=FALSE}
@@ -9,6 +10,18 @@ knitr::opts_chunk$set(
   fig.retina = 2
 )
 ```
+
+
+## Introdução
+
+- O que é/o que não é
+- User/server side
+
+## Estrutura básica
+
+- Template minimal
+- Rodar/modificar/parar
+
 
 ## Introdução
 
