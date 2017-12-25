@@ -1,10 +1,22 @@
 ---
-title: Introdução
-date: '2017-02-05'
+title: 'Introdução'
+date: '2017-12-25'
 ---
 
 
 
+
+
+
+## Introdução
+
+- O que é/o que não é
+- User/server side
+
+## Estrutura básica
+
+- Template minimal
+- Rodar/modificar/parar
 
 
 ## Introdução
@@ -138,6 +150,18 @@ Imagine que para cada função `xxOutput('foo', ...)` do `ui.R` você pode coloc
 (na outra página)
 
 
+
+## UI
+
+- Funções do ui geram código HTML
+- Inputs
+   - dar exemplos
+   - explicar argumentos
+- Outputs
+   - tabela com exemplo de funções
+   - discutir argumentos de uma função
+
+
 <script src="https://cdn.datacamp.com/datacamp-light-latest.min.js"></script>
 
 
@@ -159,4 +183,67 @@ $$
 
 
 
+
+
+<script src="https://cdn.datacamp.com/datacamp-light-latest.min.js"></script>
+
+
+## Server
+
+- Arquitetura
+   - atualização dos parâmetros (inputs)
+   - outputs
+   - funções Render
+   - dar exemplos
+
+
+<script src="https://cdn.datacamp.com/datacamp-light-latest.min.js"></script>
+
+
+## Reatividade
+
+- Exemplo Excel
+- reactive values
+- reactive functions
+   - render_()
+   - reactive()
+   - isolate()
+   - observeEvent()
+   - observe()
+   - eventReactive()
+   - reactiveValues()
+
+
+<script src="https://cdn.datacamp.com/datacamp-light-latest.min.js"></script>
+
+
+## Costumizando aparência
+
+- fluidPage()
+- tags()
+   - exemplos
+- HTML()
+- layout
+   - fluidRow()
+   - fixedPage()
+   - fixedRow()
+- Paineis
+- shinydashboard
+- CSS
+
+
+<script src="https://cdn.datacamp.com/datacamp-light-latest.min.js"></script>
+
+
+## Compartilhando
+
+- app.R (precisa ter esse nome)
+- shinyapps.io
+   - servidor do Rstudio
+   - escalável
+   - fácil
+   - gratuito*
+   - explicar como publicar
+- Servidor próprio
+   - Shiny server
 
