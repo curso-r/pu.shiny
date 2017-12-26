@@ -14,3 +14,15 @@ author: "William Amorim"]
    - explicar como publicar
 - Servidor próprio
    - Shiny server
+
+### Shiny Server Pro
+
+- Licença comercial do Shiny-server
+- Possui algumas características a mais, como autenticação e suporte.
+
+### shinyapps.io
+
+- Para compartilhar um aplicativo shiny, geralmente precisamos ter um servidor Linux (geralmente utilizando algum serviço na cloud como AWS ou DigitalOcean) com o shiny server instalado.
+- Isso pode ser doloroso.
+- O shinyapps.io é um sistema (que envolve tanto pacote do R como uma página web) que permite que o usuário coloque sua aplicação shiny na web sem muito esforço.
+- O serviço foi desenvolvido pela RStudio Inc. e possui contas grátis e pagas.

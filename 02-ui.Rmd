@@ -12,3 +12,6 @@ author: "William Amorim"
 - Outputs
    - tabela com exemplo de funções
    - discutir argumentos de uma função
+
+
+Imagine que para cada função `xxOutput('foo', ...)` do `ui.R` você pode colocar um código do tipo `output$foo <- renderXX(...)` no `server.R`. A função no arquivo `ui.R` determina a localização e identificação do elemento. Crie gráficos com `plotOutput` e `renderPlot` e exiba dados com `dataTableOutput` e `renderDataTable`.

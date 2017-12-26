@@ -14,30 +14,124 @@ knitr::opts_chunk$set(
 
 ## Introdução
 
-- O que é/o que não é
-- User/server side
+Até gora, pincelamos os principais elementos de transformação, visualização e modelagem de dados. Para completar nossa análise, precisamos de boas ferramentas de comunicação.
+
+A maior parte dos trabalhos de análise estatística possui três *outputs* possíveis: 
+
+- relatórios analíticos;
+- *dashboards* de visualização; e
+- APIs (*Application Programming Interfaces*).
+
+O objetivo desta seção é a construção de *dashboards* utilizando o pacote `shiny`.
+
+O Shiny é um sistema para desenvolvimento de aplicações web usando o R, um pacote do R (`shiny`) e um servidor web (`shiny server`). O Shiny é exatamente isso e nada mais, portanto Shiny **não** é uma página web, **não** é um substituto para sistemas mais gerais, como Ruby on Rails e Django, e também **não** é uma ferramenta gerencial, como o Tableau.
+
+Para entender sobre Shiny, é necessário entender primeiro o que é [server side e user side](http://programmers.stackexchange.com/a/171210 "diferencas"). Quando surfamos na web, nos _comunicamos_ com servidores do mundo inteiro, geralmente por meio do protocolo HTTP.
+
+No *server side*, processamos requisições e dados do cliente, estruturamos e enviamos páginas web, interagimos com banco de dados etc. Linguagens *server side* comuns são PHP, C#, Java, R etc (virtualmente qualquer linguagem de programação).
+
+No *user side*, criamos interfaces gráficas a partir dos códigos recebidos pelo servidor. É onde enviamos e recebemos as informações do *server side*. As "linguagens" mais usuais nesse caso são HTML, CSS e JavaScript.
+
+Mas onde está o Shiny nisso tudo? O código de uma aplicação Shiny nos permite estruturar tanto a interface com o usuário quanto o processamento de dados, geração de visualizações e modelagem, isto é, nós programamos tanto o *user side* quanto o *server side* numa tacada só. Assim, ao rodarmos o código, criamos um servidor que envia páginas web, recebe informações do usuário e processa os dados, utilizando apenas o R.
+
+O pacote `shiny` do R possui internamente um servidor web básico, geralmente utilizado para aplicações locais, permitindo somente uma aplicação por vez. O `shiny server` é um programa que roda somente em Linux que permite o acesso a múltiplas aplicações simultaneamente. Falaremos mais sobre isso no item *Compartilhando*.
+
+Antes de começarmos a explorar o Shiny, instale o pacote `shiny` no seu computador
+
+```{r, eval=FALSE}
+install.packages("shiny")
+```
+
+e, em seguida, carregue o pacote
+
+```{r, message=FALSE, warning=FALSE}
+library(shiny)
+```
 
 ## Estrutura básica
 
-- Template minimal
-- Rodar/modificar/parar
+Um aplicativo em Shiny (ou Shiny app) é gerado por um único script chamado `app.R`. Esse script tem três componentes:
+
+- um objeto com a interface do usuário (*user side*);
+
+- uma função `server()` (*server side*); e
+
+- uma chamada para a função `shinyApp()`.
+
+Apresentamos abaixo um exemplo minimal de aplicação com essa estrutura.
+
+```{r, eval=FALSE}
+library(shiny)
+
+# Define a interface do usuário para o app que gera um histograma.
+ui <- fluidPage(
+
+  # Título do app.
+  titlePanel("Meu primeiro shiny app!"),
+
+  # Barra lateral com as definições do input e do output.
+  sidebarLayout(
+
+    # Barra lateral para os inputs.
+    sidebarPanel(
+
+      # Input: número de classes do histograma.
+      sliderInput(inputId = "classes",
+                  label = "Número de classes:",
+                  min = 1,
+                  max = 30,
+                  value = 10)
+
+    ),
+
+    # Painel principal para mostrar os outputs.
+    mainPanel(
+
+      # Output: Histograma
+      plotOutput(outputId = "distPlot")
+
+    )
+  )
+)
 
 
-## Introdução
+# Define o código necessário para a construção de um histograma.
+server <- function(input, output) {
 
-Nas outras aulas pincelamos os elementos de transformação, visualização e modelagem de dados. Para completar nossos trabalhos, precisamos de boas ferramentas de comunicação.
+  # Função que gera o histograma e devolve para o user side.
+  # Essa função é reativa. Isso significa que o histograma
+  # vai mudar sempre que o valor do número de classes mudar.
+  output$distPlot <- renderPlot({
 
-A maior parte dos trabalhos de análise estatística possui três *outputs* possíveis: i) relatórios analíticos, ii) *dashboards* de visualização e iii) APIs (*Application Programming Interfaces*). Neste Power-Up, vamos aprender a construir *dashboards* utilizando o pacote `shiny`.
+    x    <- mtcars$mpg
+    bins <- seq(min(x), max(x), length.out = input$classes + 1)
 
-O Shiny é um sistema para desenvolvimento de aplicações web usando o R, um pacote do R (`shiny`) e um servidor web (`shiny server`). O Shiny é exatamente isso e nada mais, portanto Shiny não é uma página web, não é um substituto para sistemas mais gerais, como Ruby on Rails e Django, e também não é uma ferramenta gerencial, como o Tableau.
+    hist(x, breaks = bins, col = "#75AADB", border = "white",
+         xlab = "Milhas por galão",
+         main = "Histograma do número de milhas rodadas por galão de combustível.")
 
-Para entender sobre Shiny, é necessário entender primeiro o que é [server side e user side](http://programmers.stackexchange.com/a/171210 "diferencas"). Quando surfamos na web, nos _comunicamos_ com servidores do mundo inteiro, geralmente através do protocolo HTTP.
+  })
 
-No server side, processamos requisições e dados do cliente, estrutura e envia páginas web, interage com banco de dados, etc. Linguagens server side comuns são PHP, C#, Java, R etc (virtualmente qualquer linguagem de programação).
+}
 
-No user side, criamos interfaces gráficas a partir dos códigos recebidos pelo servidor, envia e recebe informações do servidor etc. As "linguagens" mais usuais nesse caso são HTML, CSS e JavaScript.
+shinyApp(ui = ui, server = server)
+```
 
-Mas onde está o Shiny nisso tudo? O código de uma aplicação shiny fica no _server side_. O shiny permite que um computador (servidor) envie páginas web, receba informações do usuário e processe dados, utilizando apenas o R. Para rodar aplicativos shiny, geralmente estruturamos a parte relacionada ao HTML, JavaScript e CSS no arquivo `ui.R`, e a parte relacionada com processamento de dados e geração de gráficos e análises no arquivo `server.R`. Os arquivos `ui.R` e `server.R` ficam no servidor! Atualmente é possível construir [aplicativos em um arquivo só](http://shiny.rstudio.com/articles/single-file.html), mas vamos manter a estrutura de `ui.R` e `server.R`.
+Não se assuste com tanto vocabulário novo! Vamos passar por cada função ao decorrer desta seção. Nesse primeiro momento, queremos apenas que você se familiarize com a estrutura do código: primeiro a definição do objeto `ui`, em seguida a estruração da função `server()` e por fim a chamada da função `shinyApp()`.
 
-O pacote `shiny` do R possui internamente um servidor web básico, geralmente utilizado para aplicações locais, permitindo somente uma aplicação por vez. O `shiny server` é um programa que roda somente em Linux que permite o acesso a múltiplas aplicações simultaneamente.
+Existem duas maneiras de rodar o aplicativo. A primeira é rodar a função `runApp("caminho-para-o-arquivo-app.R"). A segunda é clicar no botão "Run App" que vai aparecer no RStudio logo acima do seu scrpit. Sempre que você estruturar um arquivo da maneira acima, o RStudio vai entender que se trata de um Shiny app e vai gerar essa opção (e outras).
+
+Ao rodar o app, uma nova janela se abrirá e você terá acesso ao aplicativo (veja figura baixo). Ele estará rodando localmente, então você ainda não poderá acessá-lo pela internet.
+
+```{r}
+knitr::include_graphics("figures/app_minimal.png")
+```
+
+Minimize a janela e veja no seu console que a sessão do R estará ocupada rodando o aplicativo. Assim, um Shiny app terá sempre uma sessão de R rodando por trás.
+
+Você pode interagir com o app mudando o número de classes no *slider* gerado à esquerda. Sempre que você mudar o valor, o gráfico será atualizado automaticamente.
+
+Para encerrar o aplicativo, basta fechar a janela. Observe no console que a sessão volta a ficar disponível.
+
+Agora que você já conhece melhor a estrutura de um Shiny app, vamos entender melhor como construí-lo, começando com a interface do usuário.
 
