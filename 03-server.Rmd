@@ -3,7 +3,7 @@ title: "Server"
 author: "William Amorim"
 ---
 
-## Server
+## Server side
 
 - Arquitetura
    - atualização dos parâmetros (inputs)
