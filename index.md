@@ -1,6 +1,6 @@
 ---
 title: 'Introdução'
-date: '2017-12-27'
+date: '2017-12-29'
 ---
 
 
@@ -88,7 +88,7 @@ ui <- fluidPage(
     mainPanel(
 
       # Output: Histograma
-      plotOutput(outputId = "distPlot")
+      plotOutput(outputId = "hist")
 
     )
   )
@@ -214,7 +214,7 @@ ui <- fluidPage(
     ),
 
     mainPanel(
-      plotOutput(outputId = "distPlot")
+      plotOutput(outputId = "hist")
     )
   )
 )
@@ -257,26 +257,157 @@ Criados os inputs e outputs do app, agora precisamos manipulá-los no *server si
 
 ## Server side
 
-- Arquitetura
-   - atualização dos parâmetros (inputs)
-   - outputs
-   - funções Render
-   - dar exemplos
+Com a interface do usuário estruturada, precisamos agora implementar a função `server()`. Nela, colocaremos as intruções para gerar os outputs que nós vemos no *user side* a partir dos valores dos inputs que o usuário escolher.
+
+A primeira coisa que precisamos fazer é defini-la. A função `server()` será sempre uma função que recebe dois argumentos: `input` e `output`. 
+
+
+```r
+server <- function(input, output) {
+  
+  # Código
+  
+}
+```
+
+A partir daí, precisamos seguir três regras:
+
+1. Todos os outputs estão numa lista chamada `output`. Assim, como no exemplo do histograma nós chamamos o gráfico de `hist`, para nos referirmos a ele no *server side* utilizaremos `output$hist`.
+
+2. Os outputs devem ser construídos com funções `render_()`. Existe uma função `render_()` para cada tipo de objeto. As principais são:
+
+- `renderDataTable()` - data frames.
+- `renderImage()` -	imagens.
+- `renderPlot()` - gráficos.
+- `renderPrint()` - qualquer printed output.
+- `renderTable()` - data frames, matrizes, e outras estruturas em forma de tabela.
+- `renderText()` - strings.
+- `renderUI()` - um elemento do UI ou HTML.
+
+O argumento dessas funções será sempre um bloco de código, usado para gerar o output desejado. Repare que para gerar o histograma, utilizamos a função `renderPlot()`.
+
+3. Da mesma forma que os outputs, todos os inputs estão numa lista chamada `input`. Assim, para acessar o valor escolhido para o número de classes no exemplo do histograma, utilizaremos `input$classes`.
+
+Agora já conseguimos entender o código do nosso exemplo.
+
+
+```r
+server <- function(input, output) {
+
+  output$distPlot <- renderPlot({
+
+    x    <- mtcars$mpg
+    bins <- seq(min(x), max(x), length.out = input$classes + 1)
+
+    hist(x, breaks = bins, col = "#75AADB", border = "white",
+         xlab = "Milhas por galão",
+         main = "Histograma do número de milhas rodadas por galão de combustível.")
+
+  })
+
+}
+```
+
+Repare nas `{}` dentro da função `renderPlot()`. Elas permitem que qualquer estrutura de código possa ser passada como argumento. Podemos então pular linhas e identar nosso código normalmente dentro das funções `render_()`.
+
+Sempre que você usar um input dentro de uma função `render_()`, o seu output se tornará reativo ao valor do input. Isso significa que, sempre que o usuário mudar o valor do input, o Shiny atualizará automaticamente o valor dentro da lista e também todas as funções `render_()` que dependam dele.
+
+No nosso exemplo, sempre que o usuário mudar o número de classes no *slider*, o aplicativo atualizará o valor de `input$classes` e rodará novamente o código dentro da função `renderPlot()`. Assim, o objeto `output$hist` será atualizado.
+
+A reatividade é um princípio essencial dentro do Shiny, e saber usá-la é primordial para que o aplicativo funcione corretamente e de forma eficiente. A seguir, exploraremos mais a fundo esse conceito e apresentaremos funções que auxiliam a manipular a reatividade.
+
 
 
 
 ## Reatividade
 
-- Exemplo Excel
-- reactive values
-- reactive functions
-   - render_()
-   - reactive()
-   - isolate()
-   - observeEvent()
-   - observe()
-   - eventReactive()
-   - reactiveValues()
+Para entender melhor como funciona a reatividade no Shiny, podemos pensar em uma fórmula do Excel. Se colocamos uma fórmula na célula A1 que utiliza as células B1 e C1, sempre que atualizarmos os valores de B1 e C1, o valor em A1 será automaticamente atualizado.
+
+No Shiny, a ideia é exatamente a mesma. A diferença é que em vez de células, temos inputs e outputs. 
+
+O fluxo de reatividade será sempre conduzido por valores e funções reativas. Os objetos dentro da lista `input` são os principais objetos reativos e as funções `render_()` são as principais funções reativas. 
+
+Um fluxo básico seria o seguinte:
+
+1. O usuário altera o valor do input `x`.
+2. O valor reativo `input$x` é invalidado.
+3. Toda função reativa que depender de `input$x` é notificada.
+4. Essas funções verificam qual é o novo valor de `input$x` e atualizam suas saídas.
+
+**Lembre-se**: valores reativos só trabalham com funções reativas. Tente, por exemplo, colocar um valor reativo dentro de uma função não-reativa.
+
+
+```r
+library(shiny)
+
+ui <- fluidPage(
+  sidebarLayout(
+    sidebarPanel(
+      numericInput(inputId = "num",
+                   label = "Número  de observações",
+                   value = 100)
+    ),
+    mainPanel(plotOutput(outputId = "hist"))
+  )
+)
+
+server <- function(input, output) {
+  
+  hist(rnorm(input$num))
+  
+}
+
+shinyApp(ui = ui, server = server)
+```
+
+Você receberá uma mensagem do tipo:
+
+```
+Error in .getReactiveEnvironment()\$currentContext() : 
+  Operation not allowed without an active reactive context. (You tried to do something that can only be done from inside a reactive expression or observer.)
+```
+A forma correta seria usar a função `renderPlot()`.
+
+
+```r
+library(shiny)
+
+ui <- fluidPage(
+  sidebarLayout(
+    sidebarPanel(
+      numericInput(inputId = "num",
+                   label = "Número  de observações",
+                   value = 100)
+    ),
+    mainPanel(plotOutput(outputId = "hist"))
+  )
+)
+
+server <- function(input, output) {
+  
+  output$hist <- renderPlot({hist(rnorm(input$num))})
+  
+}
+
+shinyApp(ui = ui, server = server)
+```
+
+O Shiny disponibiliza funções para manipular a reatividade, alterando o fluxo básico apresentado acima.
+
+- `reactive()` - Usada para criar objetos reativos. Elas funcionam tal como as funções `render_()`, mas não geram outputs para o *user side*.
+
+- `isolate()` - Usada para inserir valores reativos dentro de funções reativas sem criar um fluxo de reatividade.
+
+- `observeEvent()` - Usada como um gatilho para rodar código dentro do servidor. Esse código se refere a alguma ação, como imprimir uma mensagem no console ou salvar um arquivo. Geralmente usada com a função `actionButton()`, que criam botões de ação no *user side*. A função recebe um valor reativo e um bloco de código. Ela rodará o código sempre que o valor reativo especificado for atualizado. Valores reativos dentro do código que não o especificado funcionarão como se estivesse com `isolate()`.
+
+- `observe()` - Também usada como um gatilho para rodar código no servidor, mas, diferentemente da `observeEvent()`, vai responder a qualquer valor reativo que estiver dentro do código. 
+
+- `eventReactive()` - Funciona como a `oberserveEvent()`, mas em vez de executar uma ação, essa função é utilizada para criar valores reativos condicionados à atualização do valor reativo especificado como argumento. 
+- `reactiveValues()` - Cria uma lista de valores reativos que podem ser manipulados no código.
+
+A melhor dica para orientar a utilização dessas funções é fazer com que o seu código rode o menor número de vezes possível. Em um app complexo, saber o que deve ser ou não reativo pode não ser trivial. Por isso, o domínio desse conceito e dessas funções é importante para que o seu aplicativo seja eficiente, principalmente quando ele for ser utilizado por várias pessoas ao mesmo tempo.
+
+Acesse o `help()` para mais informações sobre essas funções. Um tutorial muito mais completo sobre reatividade está disponível na [página do Shiny no site do Rstudio](https://shiny.rstudio.com/tutorial/written-tutorial/lesson6/).
 
 
 
