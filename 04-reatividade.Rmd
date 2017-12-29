@@ -5,13 +5,88 @@ author: "William Amorim"
 
 ## Reatividade
 
-- Exemplo Excel
-- reactive values
-- reactive functions
-   - render_()
-   - reactive()
-   - isolate()
-   - observeEvent()
-   - observe()
-   - eventReactive()
-   - reactiveValues()
+Para entender melhor como funciona a reatividade no Shiny, podemos pensar em uma fórmula do Excel. Se colocamos uma fórmula na célula A1 que utiliza as células B1 e C1, sempre que atualizarmos os valores de B1 e C1, o valor em A1 será automaticamente atualizado.
+
+No Shiny, a ideia é exatamente a mesma. A diferença é que em vez de células, temos inputs e outputs. 
+
+O fluxo de reatividade será sempre conduzido por valores e funções reativas. Os objetos dentro da lista `input` são os principais objetos reativos e as funções `render_()` são as principais funções reativas. 
+
+Um fluxo básico seria o seguinte:
+
+1. O usuário altera o valor do input `x`.
+2. O valor reativo `input$x` é invalidado.
+3. Toda função reativa que depender de `input$x` é notificada.
+4. Essas funções verificam qual é o novo valor de `input$x` e atualizam suas saídas.
+
+**Lembre-se**: valores reativos só trabalham com funções reativas. Tente, por exemplo, colocar um valor reativo dentro de uma função não-reativa.
+
+```{r, eval=FALSE}
+library(shiny)
+
+ui <- fluidPage(
+  sidebarLayout(
+    sidebarPanel(
+      numericInput(inputId = "num",
+                   label = "Número  de observações",
+                   value = 100)
+    ),
+    mainPanel(plotOutput(outputId = "hist"))
+  )
+)
+
+server <- function(input, output) {
+  
+  hist(rnorm(input$num))
+  
+}
+
+shinyApp(ui = ui, server = server)
+```
+
+Você receberá uma mensagem do tipo:
+
+```
+Error in .getReactiveEnvironment()\$currentContext() : 
+  Operation not allowed without an active reactive context. (You tried to do something that can only be done from inside a reactive expression or observer.)
+```
+A forma correta seria usar a função `renderPlot()`.
+
+```{r, eval=FALSE}
+library(shiny)
+
+ui <- fluidPage(
+  sidebarLayout(
+    sidebarPanel(
+      numericInput(inputId = "num",
+                   label = "Número  de observações",
+                   value = 100)
+    ),
+    mainPanel(plotOutput(outputId = "hist"))
+  )
+)
+
+server <- function(input, output) {
+  
+  output$hist <- renderPlot({hist(rnorm(input$num))})
+  
+}
+
+shinyApp(ui = ui, server = server)
+```
+
+O Shiny disponibiliza funções para manipular a reatividade, alterando o fluxo básico apresentado acima.
+
+- `reactive()` - Usada para criar objetos reativos. Elas funcionam tal como as funções `render_()`, mas não geram outputs para o *user side*.
+
+- `isolate()` - Usada para inserir valores reativos dentro de funções reativas sem criar um fluxo de reatividade.
+
+- `observeEvent()` - Usada como um gatilho para rodar código dentro do servidor. Esse código se refere a alguma ação, como imprimir uma mensagem no console ou salvar um arquivo. Geralmente usada com a função `actionButton()`, que criam botões de ação no *user side*. A função recebe um valor reativo e um bloco de código. Ela rodará o código sempre que o valor reativo especificado for atualizado. Valores reativos dentro do código que não o especificado funcionarão como se estivesse com `isolate()`.
+
+- `observe()` - Também usada como um gatilho para rodar código no servidor, mas, diferentemente da `observeEvent()`, vai responder a qualquer valor reativo que estiver dentro do código. 
+
+- `eventReactive()` - Funciona como a `oberserveEvent()`, mas em vez de executar uma ação, essa função é utilizada para criar valores reativos condicionados à atualização do valor reativo especificado como argumento. 
+- `reactiveValues()` - Cria uma lista de valores reativos que podem ser manipulados no código.
+
+A melhor dica para orientar a utilização dessas funções é fazer com que o seu código rode o menor número de vezes possível. Em um app complexo, saber o que deve ser ou não reativo pode não ser trivial. Por isso, o domínio desse conceito e dessas funções é importante para que o seu aplicativo seja eficiente, principalmente quando ele for ser utilizado por várias pessoas ao mesmo tempo.
+
+Acesse o `help()` para mais informações sobre essas funções. Um tutorial muito mais completo sobre reatividade está disponível na [página do Shiny no site do Rstudio](https://shiny.rstudio.com/tutorial/written-tutorial/lesson6/).

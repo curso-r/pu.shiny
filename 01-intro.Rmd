@@ -88,7 +88,7 @@ ui <- fluidPage(
     mainPanel(
 
       # Output: Histograma
-      plotOutput(outputId = "distPlot")
+      plotOutput(outputId = "hist")
 
     )
   )

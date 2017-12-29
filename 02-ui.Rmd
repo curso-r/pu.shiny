@@ -74,7 +74,7 @@ ui <- fluidPage(
     ),
 
     mainPanel(
-      plotOutput(outputId = "distPlot")
+      plotOutput(outputId = "hist")
     )
   )
 )
