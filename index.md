@@ -1,6 +1,6 @@
 ---
 title: 'Introdução'
-date: '2017-12-30'
+date: '2017-12-31'
 ---
 
 
@@ -257,7 +257,7 @@ Criados os inputs e outputs do app, agora precisamos manipulá-los no *server si
 
 ## Server side
 
-Com a interface do usuário estruturada, precisamos agora implementar a função `server()`. Nela, colocaremos as intruções para gerar os outputs que nós vemos no *user side* a partir dos valores dos inputs que o usuário escolher.
+Com a interface do usuário estruturada, precisamos agora implementar a função `server()`. Nela, colocaremos as instruções para gerar os outputs que nós vemos no *user side* a partir dos valores dos inputs que o usuário escolher.
 
 A primeira coisa que precisamos fazer é defini-la. A função `server()` será sempre uma função que recebe dois argumentos: `input` e `output`. 
 
@@ -308,7 +308,7 @@ server <- function(input, output) {
 }
 ```
 
-Repare nas `{}` dentro da função `renderPlot()`. Elas permitem que qualquer estrutura de código possa ser passada como argumento. Podemos então pular linhas e identar nosso código normalmente dentro das funções `render_()`.
+Repare nas `{}` dentro da função `renderPlot()`. Elas permitem que qualquer estrutura de código possa ser passada como argumento. Podemos então pular linhas e indentar nosso código normalmente dentro das funções `render_()`.
 
 Sempre que você usar um input dentro de uma função `render_()`, o seu output se tornará reativo ao valor do input. Isso significa que, sempre que o usuário mudar o valor do input, o Shiny atualizará automaticamente o valor dentro da lista e também todas as funções `render_()` que dependam dele.
 
@@ -539,9 +539,9 @@ knitr::include_graphics("figures/app-layout.png")
 
 <img src="figures/app-layout.png" title="plot of chunk unnamed-chunk-24" alt="plot of chunk unnamed-chunk-24" width="60%" height="60%" />
 
-A profundide em um Shiny app é acessada utilizando abas e painéis. As principais funções para trabalhar com essa feature são: `wellPanel()`, `tabPanel()`,  `tabsetPanel()` e `navlistPanel()`.
+A profundidade em um Shiny app é acessada utilizando abas e painéis. As principais funções para trabalhar com essa feature são: `wellPanel()`, `tabPanel()`,  `tabsetPanel()` e `navlistPanel()`.
 
-Deixamos como exercício entender a utilização de cada uma dessas funções. Lembre-se sempre de olhar o `help()` e visitar o [tutorial completo do Shiny](https://shiny.rstudio.com/tutorial/) no site do Rstudio.
+Deixamos como exercício entender a utilização de cada uma dessas funções. Lembre-se sempre de olhar o `help()` e visitar o [tutorial completo do Shiny](https://shiny.rstudio.com/tutorial/) no site do RStudio.
 
 Também é possível trabalhar com CSS dentro do Shiny. Por padrão, o Shiny usa o framework [Bootstrap³](getbootstrap.com). Se você quiser usar um arquivo `.css` próprio, você precisa colocá-lo em um subdiretório chamado `www` e especificar o nome do arquivo no argumento `theme=` das funções `fluidPage()` ou `fixedPage()`.
 
@@ -552,25 +552,55 @@ Há outras duas formas de alterar o CSS. A primeira é utilizar a função `tags
 
 ## Compartilhando
 
-- app.R (precisa ter esse nome)
-- shinyapps.io
-   - servidor do Rstudio
-   - escalável
-   - fácil
-   - gratuito*
-   - explicar como publicar
-- Servidor próprio
-   - Shiny server
+Para compartilhar o seu app online, o Shiny oferece duas opções: o Shiny Server e o shinyapps.io.
 
-### Shiny Server Pro
+**Nota**: independente da opção escolhida, para o compartilhamento online funcionar, o script com o código precisa ter o nome `app.R`.
 
-- Licença comercial do Shiny-server
-- Possui algumas características a mais, como autenticação e suporte.
+Veja a seguir mais detalhes sobre cada uma dessas opções.
+
+### Shiny Server
+
+O Shiny Server é um programa *backend* gratuito que monta um servidor web em linux feito para hospedar aplicativos em Shiny.
+
+Para download, instruções de uso e mais informações, acesse o site: https://www.rstudio.com/products/shiny/shiny-server/.
+
+O Shiny Server também tem uma versão paga, o [Shiny Server Pro](https://www.rstudio.com/products/shiny-server-pro/), que disponibiliza ferramentas de segurança, performance, gerencialmente e suporte.
 
 ### shinyapps.io
 
-- Para compartilhar um aplicativo shiny, geralmente precisamos ter um servidor Linux (geralmente utilizando algum serviço na cloud como AWS ou DigitalOcean) com o shiny server instalado.
-- Isso pode ser doloroso.
-- O shinyapps.io é um sistema (que envolve tanto pacote do R como uma página web) que permite que o usuário coloque sua aplicação shiny na web sem muito esforço.
-- O serviço foi desenvolvido pela RStudio Inc. e possui contas grátis e pagas.
+O shinyapps.io é um sistema do RStudio (que envolve tanto um pacote do R como uma página web) para a hospedagem de aplicativos em Shiny. As vantagens de se usar esse serviço são as seguintes:
+
+- Você não vai precisar contratar um serviço de hospedagem nem configurar um servidor Linux.
+
+- Ele é escalável, isto é, quando muita gente começa a usar o seu app, o servidor vai alocar mais processamento automaticamente para não perder performance.
+
+- É seguro, fácil de usar e tem um versão gratuita.
+
+Para começar a usar o shinyapps.io, você precisa:
+
+1. Instalar o pacote `rsconnect`.
+
+
+```r
+devtools::install_github("rstudio/rsconnect")
+```
+
+2. Criar uma conta no [shinyapps.io](shinyapps.io).
+
+3. No RStudio, rodar o app e clicar em *Publish*.
+
+
+```r
+knitr::include_graphics("figures/app-publish.png")
+```
+
+<img src="figures/app-publish.png" title="plot of chunk unnamed-chunk-26" alt="plot of chunk unnamed-chunk-26" width="60%" height="60%" />
+
+Basta seguir as instruções e em alguns minutos você receberá um link para acessar o seu app online. Assim, tudo o que uma pessoa precisará para acessá-lo é um navegador web.
+
+Para mais informações, acesse o [guia do usuário do shinyapps.io](http://docs.rstudio.com/shinyapps.io/).
+
+
+
+
 
