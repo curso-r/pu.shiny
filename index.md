@@ -44,7 +44,6 @@ e, em seguida, carregue o pacote
 
 ```r
 library(shiny)
-## Error in library(shiny): there is no package called 'shiny'
 ```
 
 ## Estrutura básica
@@ -123,11 +122,6 @@ Existem duas maneiras de rodar o aplicativo. A primeira é rodar a função `run
 
 Ao rodar o app, uma nova janela se abrirá e você terá acesso ao aplicativo (veja figura baixo). Ele estará rodando localmente, então você ainda não poderá acessá-lo pela internet.
 
-
-```r
-knitr::include_graphics("figures/app_minimal.png")
-```
-
 <img src="figures/app_minimal.png" title="plot of chunk unnamed-chunk-11" alt="plot of chunk unnamed-chunk-11" width="60%" height="60%" />
 
 Minimize a janela e veja no seu console que a sessão do R estará ocupada rodando o aplicativo. Assim, um Shiny app terá sempre uma sessão de R rodando por trás.
@@ -148,8 +142,9 @@ Tudo o que será apresentado ao usuário está guardado no objeto `ui`, que nada
 
 ```r
 fluidPage()
-## Error in fluidPage(): could not find function "fluidPage"
 ```
+
+<!--html_preserve--><div class="container-fluid"></div><!--/html_preserve-->
 
 A função `fluidPage()` utilizada como exemplo acima é utilizada pelo Shiny para criar um display que automaticamente ajusta as dimensões da janela do navegador do usuário. Os elementos da interface do usuário são então colocados dentro dessa função. Veja um exemplo:
 
@@ -184,17 +179,17 @@ Note que nós criamos apenas títulos e painéis. Não há nada com o que o usu�
 
 Na prática, inputs são widgets que possibilitam a interação do usuário com o app. Eles recebem um valor escolhido pelo usuário e o envia para o *server side*. Segue uma lista dos principais inputs utilizados num Shiny app:
 
-`actionButton()` - botão para executar uma ação.
-`checkboxGroupInput()` - 	um grupo de *check boxes*.
-`checkboxInput()` -	um único *check box*.
-`dateInput()` -	um calendário para seleção de data.
-`dateRangeInput()` -	um par de calendários para escolher um intervalo de datas.
-`fileInput()` -	uma ferramenta para auxiliar o upload de arquivos.
-`numericInput()` -	Um campo para enviar números.
-`radioButtons()` -	Um conjunto de botões para seleção.
-`selectInput()` -	Um *select box* com um conjunto de opções.
-`sliderInput()` -	Um slider.
-`textInput()` -	Um campo para enviar texto.
+- `actionButton()` - botão para executar uma ação.
+- `checkboxGroupInput()` - 	um grupo de *check boxes*.
+- `checkboxInput()` -	um único *check box*.
+- `dateInput()` -	um calendário para seleção de data.
+- `dateRangeInput()` -	um par de calendários para escolher um intervalo de datas.
+- `fileInput()` -	uma ferramenta para auxiliar o upload de arquivos.
+- `numericInput()` -	Um campo para enviar números.
+- `radioButtons()` -	Um conjunto de botões para seleção.
+- `selectInput()` -	Um *select box* com um conjunto de opções.
+- `sliderInput()` -	Um slider.
+- `textInput()` -	Um campo para enviar texto.
 
 No nosso primeiro exemplo, no item anterior, nós utilizamos um `sliderInput()` para interagir com o número de classes do histograma.
 
@@ -241,13 +236,13 @@ Isso quer dizer que vamos receber um output do tipo "plot" (gráfico) do servido
 
 Da mesma forma que há uma função para cada tipo de input, há uma função para cada tipo de output:
 
-`dataTableOutput()` -	para data frames.
-`htmlOutput()` ou `uiOutput()` - para código HTML.
-`imageOutput()` - para imagens.
-`plotOutput()` - para gráficos.
-`tableOutput()` - para tabelas.
-`textOutput()` - para textos.
-`verbatimTextOutput()` - para textos não-formatados.
+- `dataTableOutput()` -	para data frames.
+- `htmlOutput()` ou `uiOutput()` - para código HTML.
+- `imageOutput()` - para imagens.
+- `plotOutput()` - para gráficos.
+- `tableOutput()` - para tabelas.
+- `textOutput()` - para textos.
+- `verbatimTextOutput()` - para textos não-formatados.
 
 Assim como as funções de input, funções de output recebem um argumento de identificação, o `outputId=`. Esse argumento recebe uma string que representa o nome utilizado no *server side* para se referir a esse output. Consulte o `help()` de cada função para saber mais sobre os argumentos adicionais.
 
@@ -460,11 +455,6 @@ server <- function(input, output) {
 shinyApp(ui, server)
 ```
 
-
-```r
-knitr::include_graphics("figures/app-tags.png")
-```
-
 <img src="figures/app-tags.png" title="plot of chunk unnamed-chunk-22" alt="plot of chunk unnamed-chunk-22" width="60%" height="60%" />
 
 
@@ -532,11 +522,6 @@ shinyApp(ui, server)
 
 ```
 
-
-```r
-knitr::include_graphics("figures/app-layout.png")
-```
-
 <img src="figures/app-layout.png" title="plot of chunk unnamed-chunk-24" alt="plot of chunk unnamed-chunk-24" width="60%" height="60%" />
 
 A profundidade em um Shiny app é acessada utilizando abas e painéis. As principais funções para trabalhar com essa feature são: `wellPanel()`, `tabPanel()`,  `tabsetPanel()` e `navlistPanel()`.
@@ -552,11 +537,9 @@ Há outras duas formas de alterar o CSS. A primeira é utilizar a função `tags
 
 ## Compartilhando
 
-Para compartilhar o seu app online, o Shiny oferece duas opções: o Shiny Server e o shinyapps.io.
+Para compartilhar o seu app online, o Shiny oferece duas opções: o Shiny Server e o shinyapps.io. Veja a seguir mais detalhes sobre cada uma dessas opções.
 
 **Nota**: independente da opção escolhida, para o compartilhamento online funcionar, o script com o código precisa ter o nome `app.R`.
-
-Veja a seguir mais detalhes sobre cada uma dessas opções.
 
 ### Shiny Server
 
@@ -578,21 +561,16 @@ O shinyapps.io é um sistema do RStudio (que envolve tanto um pacote do R como u
 
 Para começar a usar o shinyapps.io, você precisa:
 
-1. Instalar o pacote `rsconnect`.
+**1.** Instalar o pacote `rsconnect`.
 
 
 ```r
 devtools::install_github("rstudio/rsconnect")
 ```
 
-2. Criar uma conta no [shinyapps.io](shinyapps.io).
+**2.** Criar uma conta no [shinyapps.io](shinyapps.io).
 
-3. No RStudio, rodar o app e clicar em *Publish*.
-
-
-```r
-knitr::include_graphics("figures/app-publish.png")
-```
+**3.** No RStudio, rodar o app e clicar em *Publish*.
 
 <img src="figures/app-publish.png" title="plot of chunk unnamed-chunk-26" alt="plot of chunk unnamed-chunk-26" width="60%" height="60%" />
 
