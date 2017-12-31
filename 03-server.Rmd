@@ -5,7 +5,7 @@ author: "William Amorim"
 
 ## Server side
 
-Com a interface do usuário estruturada, precisamos agora implementar a função `server()`. Nela, colocaremos as intruções para gerar os outputs que nós vemos no *user side* a partir dos valores dos inputs que o usuário escolher.
+Com a interface do usuário estruturada, precisamos agora implementar a função `server()`. Nela, colocaremos as instruções para gerar os outputs que nós vemos no *user side* a partir dos valores dos inputs que o usuário escolher.
 
 A primeira coisa que precisamos fazer é defini-la. A função `server()` será sempre uma função que recebe dois argumentos: `input` e `output`. 
 
@@ -54,7 +54,7 @@ server <- function(input, output) {
 }
 ```
 
-Repare nas `{}` dentro da função `renderPlot()`. Elas permitem que qualquer estrutura de código possa ser passada como argumento. Podemos então pular linhas e identar nosso código normalmente dentro das funções `render_()`.
+Repare nas `{}` dentro da função `renderPlot()`. Elas permitem que qualquer estrutura de código possa ser passada como argumento. Podemos então pular linhas e indentar nosso código normalmente dentro das funções `render_()`.
 
 Sempre que você usar um input dentro de uma função `render_()`, o seu output se tornará reativo ao valor do input. Isso significa que, sempre que o usuário mudar o valor do input, o Shiny atualizará automaticamente o valor dentro da lista e também todas as funções `render_()` que dependam dele.
 

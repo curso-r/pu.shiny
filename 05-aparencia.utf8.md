@@ -32,7 +32,8 @@ No Shiny, também podemos trabalhar com tags utilizando a função `tags()`. Ess
 `tags$hr()` - Cria uma linha horizontal.
 `tags$img()` - Adiciona uma imagem (é preciso salvá-la em um subdiretório chamado `www`).
 
-```{r, eval=FALSE}
+
+```r
 library(shiny)
 
 ui <- fluidPage(
@@ -51,9 +52,12 @@ server <- function(input, output) {
 shinyApp(ui, server)
 ```
 
-```{r}
+
+```r
 knitr::include_graphics("figures/app-tags.png")
 ```
+
+<img src="figures/app-tags.png" width="479" />
 
 
 Algumas dessas funções vêm com um `wrapper` do tipo `nome-da-tag()`. Por exemplo, as funções `tags$h1()` e `h1()` são equivalentes.
@@ -73,7 +77,8 @@ Para alterar o layout da página, você precisa usar as funções de layout:
 - `navbarPage()` - Cria um layout de navegação por abas. Cada aba representa um nível de profundidade do aplicativo.
 - `dashboardPage()` - Função do pacote `shinydashboad`. Usada para criar dashboards com o Shiny.
 
-```{r, eval=FALSE}
+
+```r
 library(shiny)
 
 ui <- fluidPage(
@@ -116,16 +121,18 @@ server <- function(input, output) {
 }
 
 shinyApp(ui, server)
-
 ```
 
-```{r}
+
+```r
 knitr::include_graphics("figures/app-layout.png")
 ```
 
+<img src="figures/app-layout.png" width="478" />
+
 A profundidade em um Shiny app é acessada utilizando abas e painéis. As principais funções para trabalhar com essa feature são: `wellPanel()`, `tabPanel()`,  `tabsetPanel()` e `navlistPanel()`.
 
-Deixamos como exercício entender a utilização de cada uma dessas funções. Lembre-se sempre de olhar o `help()` e visitar o [tutorial completo do Shiny](https://shiny.rstudio.com/tutorial/) no site do RStudio.
+Deixamos como exercício entender a utilização de cada uma dessas funções. Lembre-se sempre de olhar o `help()` e visitar o [tutorial completo do Shiny](https://shiny.rstudio.com/tutorial/) no site do Rstudio.
 
 Também é possível trabalhar com CSS dentro do Shiny. Por padrão, o Shiny usa o framework [Bootstrap³](getbootstrap.com). Se você quiser usar um arquivo `.css` próprio, você precisa colocá-lo em um subdiretório chamado `www` e especificar o nome do arquivo no argumento `theme=` das funções `fluidPage()` ou `fixedPage()`.
 
