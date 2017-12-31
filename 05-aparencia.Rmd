@@ -51,7 +51,7 @@ server <- function(input, output) {
 shinyApp(ui, server)
 ```
 
-```{r}
+```{r, echo=FALSE}
 knitr::include_graphics("figures/app-tags.png")
 ```
 
@@ -119,7 +119,7 @@ shinyApp(ui, server)
 
 ```
 
-```{r}
+```{r, echo=FALSE}
 knitr::include_graphics("figures/app-layout.png")
 ```
 

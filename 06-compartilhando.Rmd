@@ -5,11 +5,9 @@ author: "William Amorim, Julio Trecenti"
 
 ## Compartilhando
 
-Para compartilhar o seu app online, o Shiny oferece duas opções: o Shiny Server e o shinyapps.io.
+Para compartilhar o seu app online, o Shiny oferece duas opções: o Shiny Server e o shinyapps.io. Veja a seguir mais detalhes sobre cada uma dessas opções.
 
 **Nota**: independente da opção escolhida, para o compartilhamento online funcionar, o script com o código precisa ter o nome `app.R`.
-
-Veja a seguir mais detalhes sobre cada uma dessas opções.
 
 ### Shiny Server
 
@@ -31,17 +29,17 @@ O shinyapps.io é um sistema do RStudio (que envolve tanto um pacote do R como u
 
 Para começar a usar o shinyapps.io, você precisa:
 
-1. Instalar o pacote `rsconnect`.
+**1.** Instalar o pacote `rsconnect`.
 
 ```{r, eval=FALSE}
 devtools::install_github("rstudio/rsconnect")
 ```
 
-2. Criar uma conta no [shinyapps.io](shinyapps.io).
+**2.** Criar uma conta no [shinyapps.io](shinyapps.io).
 
-3. No RStudio, rodar o app e clicar em *Publish*.
+**3.** No RStudio, rodar o app e clicar em *Publish*.
 
-```{r}
+```{r, echo = FALSE}
 knitr::include_graphics("figures/app-publish.png")
 ```
 

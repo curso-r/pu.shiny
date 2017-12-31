@@ -17,4 +17,5 @@ Remotes:
     curso-r/puBuild
 Imports:
   puBuild,
-  tutorial
+  tutorial,
+  shiny
