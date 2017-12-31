@@ -146,6 +146,11 @@ fluidPage()
 
 <!--html_preserve--><div class="container-fluid"></div><!--/html_preserve-->
 
+```r
+
+# <div class="container-fluid"></div>
+```
+
 A função `fluidPage()` utilizada como exemplo acima é utilizada pelo Shiny para criar um display que automaticamente ajusta as dimensões da janela do navegador do usuário. Os elementos da interface do usuário são então colocados dentro dessa função. Veja um exemplo:
 
 
